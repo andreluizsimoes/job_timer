@@ -7,8 +7,4 @@
 
 <br>
 
-# Preview
-
-<div align="center">
-<img src="" height="auto" max-width="100%"/>
-</div>
+# Desenvolvimento EM ANDAMENTO

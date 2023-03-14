@@ -17,11 +17,13 @@ class AppConfigUI {
   });
 
   static final ThemeData theme = ThemeData(
-    primarySwatch: _primarySwatch,
+      primarySwatch: _primarySwatch,
       primaryColor: const Color(0xFF9A1421),
       primaryColorLight: const Color(0xFFED4C5C),
       inputDecorationTheme: InputDecorationTheme(
-        border: OutlineInputBorder(borderRadius: BorderRadius.circular(15)),
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(15),
+        ),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(15),
           borderSide: const BorderSide(color: Colors.grey),
