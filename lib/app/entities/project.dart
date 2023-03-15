@@ -9,7 +9,8 @@ class Project {
   Id? id;
 
   late String name;
-  
+  late int hours;
+
   @enumerated
   late ProjectStatus status;
 

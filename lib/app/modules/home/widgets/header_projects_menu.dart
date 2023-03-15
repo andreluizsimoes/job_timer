@@ -1,7 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_modular/flutter_modular.dart';
+
 import 'package:job_timer/app/entities/project_status.dart';
+import 'package:job_timer/app/modules/home/controller/home_controller.dart';
 
 class HeaderProjectsMenu extends SliverPersistentHeaderDelegate {
+  final HomeController controller;
+  HeaderProjectsMenu({
+    required this.controller,
+  });
   @override
   Widget build(
       BuildContext context, double shrinkOffset, bool overlapsContent) {
@@ -17,6 +24,7 @@ class HeaderProjectsMenu extends SliverPersistentHeaderDelegate {
               SizedBox(
                 width: constraints.maxWidth * 0.45,
                 child: DropdownButtonFormField<ProjectStatus>(
+                  value: controller.state.filterStatus,
                   borderRadius: BorderRadius.circular(10),
                   decoration: const InputDecoration(
                     contentPadding: EdgeInsets.all(8),
@@ -30,13 +38,20 @@ class HeaderProjectsMenu extends SliverPersistentHeaderDelegate {
                         ),
                       )
                       .toList(),
-                  onChanged: (value) {},
+                  onChanged: (status) {
+                    if (status != null) {
+                      controller.filter(status);
+                    }
+                  },
                 ),
               ),
               SizedBox(
                   width: constraints.maxWidth * 0.45,
                   child: ElevatedButton.icon(
-                    onPressed: () {},
+                    onPressed: () async {
+                      await Modular.to.pushNamed('/project/register');
+                      controller.loadProjects();
+                    },
                     icon: const Icon(Icons.add),
                     label: const Text(
                       'New Project',
