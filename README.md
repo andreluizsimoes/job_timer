@@ -23,12 +23,12 @@
 <table>
   <tr>
     <th><b>Project Detail Page</b></th>
-    <th><b>Finalized Project Page</b></th>
     <th><b>New Task Page</b></th>
+    <th><b>Finalized Project Page</b></th>
   </tr>
   <tr>
     <td style="width:25%"><img src="https://user-images.githubusercontent.com/18678939/226386727-67eec886-b5c4-4d98-b777-e3a3d8330be2.jpg" width="300" ></td>
-    <td style="width:25%"><img src="https://user-images.githubusercontent.com/18678939/226386729-0cfef64a-9c1a-47da-bbcf-dbec16a8f320.jpg" width="300" ></td>
     <td style="width:25%"><img src="https://user-images.githubusercontent.com/18678939/226386724-f7132c0f-c531-48d5-89c3-9491d66da029.jpg" width="300" ></td>
+    <td style="width:25%"><img src="https://user-images.githubusercontent.com/18678939/226386729-0cfef64a-9c1a-47da-bbcf-dbec16a8f320.jpg" width="300" ></td>
   </tr>
 </table>
