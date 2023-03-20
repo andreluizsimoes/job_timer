@@ -2,51 +2,44 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:job_timer/app/core/ui/asuka_snack_bar.dart';
 import 'package:job_timer/app/core/ui/button_with_loader.dart';
-import 'package:job_timer/app/modules/project/register/controller/project_register_controller.dart';
+import 'package:job_timer/app/modules/project/task/controller/task_controller.dart';
 import 'package:validatorless/validatorless.dart';
 
-class ProjectRegisterPage extends StatefulWidget {
-  final ProjectRegisterController controller;
-  const ProjectRegisterPage({super.key, required this.controller});
+class TaskPage extends StatefulWidget {
+  final TaskController controller;
+  const TaskPage({super.key, required this.controller});
 
   @override
-  State<ProjectRegisterPage> createState() => _ProjectRegisterPageState();
+  State<TaskPage> createState() => _TaskPageState();
 }
 
-class _ProjectRegisterPageState extends State<ProjectRegisterPage> {
+class _TaskPageState extends State<TaskPage> {
   final _formKey = GlobalKey<FormState>();
   final _nameEC = TextEditingController();
-  final _hoursEC = TextEditingController();
+  final _durationEC = TextEditingController();
 
   @override
   void dispose() {
     super.dispose();
     _nameEC.dispose();
-    _hoursEC.dispose();
+    _durationEC.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<ProjectRegisterController, ProjectRegisterState>(
+    return BlocListener<TaskController, TaskStatus>(
       bloc: widget.controller,
-      listener: (context, state) {
-        switch (state.status) {
-          case ProjectRegisterStatus.error:
-            AsukaSnackbar.alert(state.errorMessage!).show();
-            break;
-          case ProjectRegisterStatus.success:
-            Navigator.of(context).pop();
-            break;
-          default:
-            break;
+      listener: (context, status) {
+        if (status == TaskStatus.success) {
+          Navigator.pop(context);
+        } else if (status == TaskStatus.error) {
+          AsukaSnackbar.warning('Error while trying to add new task').show();
         }
       },
       child: Scaffold(
         backgroundColor: Colors.white,
         appBar: AppBar(
-          title: const Text(
-            'Create New Project',
-          ),
+          title: const Text('Create New Task'),
           backgroundColor: Colors.white,
           foregroundColor: Colors.black,
           elevation: 0,
@@ -59,20 +52,19 @@ class _ProjectRegisterPageState extends State<ProjectRegisterPage> {
               children: [
                 TextFormField(
                   controller: _nameEC,
-                  decoration:
-                      const InputDecoration(label: Text('Project name')),
-                  validator: Validatorless.required('Name is required!'),
+                  decoration: const InputDecoration(label: Text('Task name')),
+                  validator: Validatorless.required('Task name is required!'),
                 ),
                 const SizedBox(
                   height: 20,
                 ),
                 TextFormField(
-                  controller: _hoursEC,
+                  controller: _durationEC,
                   keyboardType: TextInputType.number,
                   decoration:
-                      const InputDecoration(label: Text('Estimated hours')),
+                      const InputDecoration(label: Text('Task duration')),
                   validator: Validatorless.multiple([
-                    Validatorless.required('Estimated hours is required!'),
+                    Validatorless.required('Duration is required!'),
                     Validatorless.number('Only numbers allowed!')
                   ]),
                 ),
@@ -82,20 +74,17 @@ class _ProjectRegisterPageState extends State<ProjectRegisterPage> {
                 SizedBox(
                   width: MediaQuery.of(context).size.width,
                   height: 50,
-                  child: ButtonWithLoader<ProjectRegisterController,
-                      ProjectRegisterState>(
+                  child: ButtonWithLoader<TaskController, TaskStatus>(
                     bloc: widget.controller,
-                    selector: (state) {
-                      var status = widget.controller.state.status;
-
-                      return status == ProjectRegisterStatus.loading;
+                    selector: (status) {
+                      return status == TaskStatus.loading;
                     },
                     onPressed: () {
                       final valid = _formKey.currentState?.validate() ?? false;
                       if (valid) {
                         final name = _nameEC.text;
-                        final hours = int.parse(_hoursEC.text);
-                        widget.controller.register(name, hours);
+                        final duration = int.parse(_durationEC.text);
+                        widget.controller.save(name, duration);
                       }
                     },
                     label: 'Save',

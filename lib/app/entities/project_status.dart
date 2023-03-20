@@ -1,6 +1,6 @@
 enum ProjectStatus {
-  emAndamento (label: 'In Progress'),
-  finalizado (label: 'Finished');
+  inProgress (label: 'In Progress'),
+  finished (label: 'Finished');
 
   final String label;
 

@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:job_timer/app/view_models/project_task_view_model.dart';
 
 class ProjectTaskTile extends StatelessWidget {
-  const ProjectTaskTile({super.key});
+  final ProjectTaskViewModel task;
+  const ProjectTaskTile({super.key, required this.task});
 
   @override
   Widget build(BuildContext context) {
@@ -14,22 +16,22 @@ class ProjectTaskTile extends StatelessWidget {
           borderRadius: BorderRadius.circular(10),
         ),
         child: Row(
-          children: const [
-            Text('Task Name'),
-            Spacer(),
-            Text(
+          children: [
+            Text(task.name),
+            const Spacer(),
+            const Text(
               'Duration:',
               style: TextStyle(
                 color: Colors.grey,
                 fontSize: 12,
               ),
             ),
-            SizedBox(
+            const SizedBox(
               width: 5,
             ),
             Text(
-              '10h',
-              style: TextStyle(
+              '${task.duration}h',
+              style: const TextStyle(
                 fontWeight: FontWeight.bold,
                 fontSize: 16,
               ),

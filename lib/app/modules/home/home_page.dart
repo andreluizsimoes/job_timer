@@ -1,5 +1,7 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:job_timer/app/core/ui/asuka_snack_bar.dart';
 import 'package:job_timer/app/modules/home/controller/home_controller.dart';
 import 'package:job_timer/app/modules/home/widgets/header_projects_menu.dart';
@@ -21,10 +23,17 @@ class HomePage extends StatelessWidget {
         }
       },
       child: Scaffold(
-        drawer: const Drawer(
+        drawer: Drawer(
           child: SafeArea(
-              child: ListTile(
-            title: Text('LogOut'),
+              child: InkWell(
+            onTap: () {
+              GoogleSignIn().signOut();
+              FirebaseAuth.instance.signOut();
+            },
+            child: const ListTile(
+              leading: Icon(Icons.logout_outlined),
+              title: Text('LogOut'),
+            ),
           )),
         ),
         body: SafeArea(

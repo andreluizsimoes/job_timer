@@ -24,6 +24,7 @@ class ProjectViewModel {
     project.tasks.loadSync();
 
     return ProjectViewModel(
+      id: project.id,
       name: project.name,
       hours: project.hours,
       status: project.status,

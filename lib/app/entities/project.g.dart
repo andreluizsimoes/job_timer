@@ -88,7 +88,7 @@ Project _projectDeserialize(
   object.name = reader.readString(offsets[1]);
   object.status =
       _ProjectstatusValueEnumMap[reader.readByteOrNull(offsets[2])] ??
-          ProjectStatus.emAndamento;
+          ProjectStatus.inProgress;
   return object;
 }
 
@@ -105,19 +105,19 @@ P _projectDeserializeProp<P>(
       return (reader.readString(offset)) as P;
     case 2:
       return (_ProjectstatusValueEnumMap[reader.readByteOrNull(offset)] ??
-          ProjectStatus.emAndamento) as P;
+          ProjectStatus.inProgress) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
   }
 }
 
 const _ProjectstatusEnumValueMap = {
-  'emAndamento': 0,
-  'finalizado': 1,
+  'inProgress': 0,
+  'finished': 1,
 };
 const _ProjectstatusValueEnumMap = {
-  0: ProjectStatus.emAndamento,
-  1: ProjectStatus.finalizado,
+  0: ProjectStatus.inProgress,
+  1: ProjectStatus.finished,
 };
 
 Id _projectGetId(Project object) {

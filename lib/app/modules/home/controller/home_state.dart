@@ -22,7 +22,7 @@ class HomeState extends Equatable {
       : this._(
           projects: [],
           status: HomeStatus.initial,
-          filterStatus: ProjectStatus.emAndamento,
+          filterStatus: ProjectStatus.inProgress,
         );
 
   @override

@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_modular/flutter_modular.dart';
+import 'package:job_timer/app/entities/project_status.dart';
+import 'package:job_timer/app/modules/project/detail/controller/project_detail_controller.dart';
+import 'package:job_timer/app/view_models/project_view_model.dart';
 
 class ProjectDetailAppbar extends SliverAppBar {
-  ProjectDetailAppbar({super.key})
+  ProjectDetailAppbar({super.key, required ProjectViewModel projectModel})
       : super(
           expandedHeight: 100,
           pinned: true,
           toolbarHeight: 100,
-          title: const Text("Project X"),
+          title: Text(projectModel.name),
           centerTitle: true,
           shape: const RoundedRectangleBorder(
               borderRadius: BorderRadius.vertical(
@@ -23,21 +27,31 @@ class ProjectDetailAppbar extends SliverAppBar {
                     borderRadius: BorderRadius.circular(10),
                     child: Container(
                       padding: const EdgeInsets.symmetric(horizontal: 20),
-                      height: 48,
+                      height: 50,
                       decoration: BoxDecoration(
                         color: Colors.white,
                         borderRadius: BorderRadius.circular(10),
                       ),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: const [
+                        children: [
                           Text(
-                            '13 tasks',
-                            style: TextStyle(
+                            '${projectModel.tasks.length} tasks',
+                            style: const TextStyle(
                               fontWeight: FontWeight.bold,
                             ),
                           ),
-                          _NewTask(),
+                          Visibility(
+                            visible:
+                                projectModel.status == ProjectStatus.inProgress,
+                            replacement: const Text(
+                              'Project Finished',
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            child: _NewTask(projectModel: projectModel),
+                          ),
                         ],
                       ),
                     ),
@@ -50,30 +64,41 @@ class ProjectDetailAppbar extends SliverAppBar {
 }
 
 class _NewTask extends StatelessWidget {
-  const _NewTask({super.key});
+  final ProjectViewModel projectModel;
+  const _NewTask({required this.projectModel});
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: [
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 8),
-          child: CircleAvatar(
-            maxRadius: 15,
-            backgroundColor: Theme.of(context).primaryColor,
-            child: const Icon(
-              Icons.add,
-              color: Colors.white,
+    return Material(
+      color: Colors.white,
+      child: GestureDetector(
+        behavior: HitTestBehavior.translucent,
+        onTap: () async {
+          await Modular.to.pushNamed('/project/task/', arguments: projectModel);
+          Modular.get<ProjectDetailController>().updateProject();
+        },
+        child: Row(
+          children: [
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8),
+              child: CircleAvatar(
+                maxRadius: 15,
+                backgroundColor: Theme.of(context).primaryColor,
+                child: const Icon(
+                  Icons.add,
+                  color: Colors.white,
+                ),
+              ),
             ),
-          ),
+            const Text(
+              'Add New Task',
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ],
         ),
-        const Text(
-          'Add New Task',
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-      ],
+      ),
     );
   }
 }

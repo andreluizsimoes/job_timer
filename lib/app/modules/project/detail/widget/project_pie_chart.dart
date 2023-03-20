@@ -1,12 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
+import 'package:job_timer/app/view_models/project_view_model.dart';
 
 class ProjectPieChart extends StatelessWidget {
-  const ProjectPieChart({super.key});
+  final ProjectViewModel projectModel;
+  const ProjectPieChart({super.key, required this.projectModel});
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final totalTasksDuration = projectModel.tasks.fold<int>(
+      0,
+      (totalValue, task) => totalValue += task.duration,
+    );
+    final durationLeft = projectModel.hours - totalTasksDuration;
+
     return SizedBox(
       width: 200,
       height: 200,
@@ -17,20 +25,20 @@ class ProjectPieChart extends StatelessWidget {
             PieChartData(
               sections: [
                 PieChartSectionData(
-                  value: 60,
+                  value: totalTasksDuration.toDouble(),
                   color: theme.primaryColor,
                   showTitle: true,
-                  title: '60h',
+                  title: '${totalTasksDuration}h',
                   titleStyle: const TextStyle(
                     fontWeight: FontWeight.bold,
                     color: Colors.white,
                   ),
                 ),
                 PieChartSectionData(
-                  value: 140,
+                  value: durationLeft.toDouble(),
                   color: theme.primaryColorLight,
                   showTitle: true,
-                  title: '140h',
+                  title: '${durationLeft}h',
                   titleStyle: const TextStyle(
                     fontWeight: FontWeight.bold,
                     color: Colors.white,
@@ -38,11 +46,13 @@ class ProjectPieChart extends StatelessWidget {
                 ),
               ],
             ),
+            swapAnimationDuration: const Duration(seconds: 1), // Optional
+            swapAnimationCurve: Curves.linearToEaseOut, // Optional
           ),
           Align(
             alignment: Alignment.center,
             child: Text(
-              '200h',
+              '${projectModel.hours}h',
               style: TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 27,

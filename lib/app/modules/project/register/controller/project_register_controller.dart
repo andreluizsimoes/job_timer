@@ -21,7 +21,7 @@ class ProjectRegisterController extends Cubit<ProjectRegisterState> {
       final project = ProjectViewModel(
         name: name,
         hours: hours,
-        status: ProjectStatus.emAndamento,
+        status: ProjectStatus.inProgress,
         tasks: [],
       );
       await _projectService.register(project);

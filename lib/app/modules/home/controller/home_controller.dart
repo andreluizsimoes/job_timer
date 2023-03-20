@@ -40,4 +40,6 @@ class HomeController extends Cubit<HomeState> {
       emit(state.copyWith(status: HomeStatus.error));
     }
   }
+
+  void updateProjects() => filter(state.filterStatus);
 }
